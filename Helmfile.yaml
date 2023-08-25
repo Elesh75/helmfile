@@ -1,0 +1,42 @@
+repositories:  # This is how you specify repo if you are using a chart from a remote repo
+  - name: prometheus
+    url: https://prometheus-community.github.io/helm-charts  # This is for an external repo 
+  - name: helloworld
+    url: git+https://github.com/Kenmakhanu/helmfile@helloworld?ref=main&sparse=0  # This is from github (git+githuburl@chartname?ref=thebranchname&parse=0)  
+                                                                            # chartname = The name of the helmchart in that github repo you want to use, (we can have many helmchart in that repo)
+                                                                                  # branchname = You have to specify a branch 
+
+releases:      # helmfile always start with releases
+  - name: demochart   # the name of this release
+    namespace: dev
+    chart: ./demochart  # the chart being used for thei release 
+    installed: true   # these are arguments; this will uninstall/down the deployment
+    values:
+      - ./Dev/values1.yml  # Absolute path to the customised values file 
+  - name: demochart1
+    namespace: prod
+    chart: ./demochart2
+    installed: false
+    values:     # Used when we have a different/customised  value file to be used for our release
+          - ./Dev/values1.yml
+  - name: prometheus
+    namespace: Dev
+    chart: prometheus/prometheus
+    installed: false
+    set:
+      - name: rbac.create
+        value: false  # this will make sure our rbac isn't created 
+  - name: prometheus1
+    namespace: prod
+    chart: prometheus/prometheus
+    installed: false
+    set:   # This is used to set values in our chart 
+      - name: rbac.create  # we are trying to use rbac 
+        value: false   # this will make sure our rbac is created 
+  - name: helloworld
+    namespace: dev
+    chart: helloworld/helloworld  # This is you write the chart name (write it twice) if its from a remote repo
+    installed: false
+
+# N.B when using the same chart for diff env/ns the name of the release must be different
+# We can use set to remove/add any value we want to our chart
