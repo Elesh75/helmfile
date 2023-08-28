@@ -33,5 +33,5 @@ git config --global credential.helper store
 
 When you fetch the repository with helm repo add, Git will prompt you to enter your GitHub username and PAT. It will then store the credentials locally for future use.
 
-Remember to prioritize security when dealing with credentials. Treat your PAT or any sensitive information as secrets, and avoid hardcoding them directly into files. Using environment variables or secure credential management systems is recommended...
+Remember to prioritize security when dealing with credentials. Treat your PAT or any sensitive information as secrets, and avoid hardcoding them directly into files. Using environment variables or secure credential management systems is recommended.
 
